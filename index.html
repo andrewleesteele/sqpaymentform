@@ -24,6 +24,7 @@
     Get ready for your first payment with Square!
 
      <div id="form-container">
+     <button class="apple-pay-button apple-pay-button-white" id="sq-apple-pay"></button>
      <div id="sq-card-number"></div>
      <div class="third" id="sq-expiration-date"></div>
      <div class="third" id="sq-cvv"></div>
@@ -83,6 +84,7 @@
                return;
            }
               alert(`The generated nonce is:\n${nonce}`);
+              console.log(nonce);
               //TODO: Replace alert with code in step 2.1
 
                             fetch('process-payment', {
