@@ -68,6 +68,11 @@ app.post('/process-payment', async (req, res) => {
   }
 });
 
+app.get('/.well-known/apple-developer-merchantid-domain-association', function(req, res){
+  const file = `apple-developer-merchantid-domain-association`;
+  res.download(file);
+})
+
 app.listen(
   port,
   () => console.log(`listening on - http://localhost:${port}`)
