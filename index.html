@@ -23,8 +23,8 @@
   <body>
     Get ready for your first payment with Square!
 
-     <div id="form-container">
      <button class="apple-pay-button apple-pay-button-white" id="sq-apple-pay"></button>
+     <div id="form-container">
      <div id="sq-card-number"></div>
      <div class="third" id="sq-expiration-date"></div>
      <div class="third" id="sq-cvv"></div>
@@ -66,6 +66,9 @@
        postalCode: {
            elementId: 'sq-postal-code',
            placeholder: 'Postal'
+       },
+       applePay:{
+        elementId: 'sq-apple-pay'
        },
        // SqPaymentForm callback functions
        callbacks: {
