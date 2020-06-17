@@ -21,14 +21,18 @@
   <link rel="stylesheet" type="text/css" href="mysqpaymentform.css">
   </head>
   <body>
-    Get ready for your first payment with Square!
-     <button class="apple-pay-button apple-pay-button-white" id="sq-apple-pay"></button>
+    <h1 id="title">Steelesa Payments</h1>
      <div id="form-container">
-     <div id="sq-card-number"></div>
-     <div class="third" id="sq-expiration-date"></div>
-     <div class="third" id="sq-cvv"></div>
-     <div class="third" id="sq-postal-code"></div>
-     <button id="sq-creditcard" class="button-credit-card" onclick="onGetCardNonce(event)">Pay $1.00</button>
+     <div id="sq-walletbox">
+      <button class="apple-pay-button apple-pay-button-white" id="sq-apple-pay"></button>
+     </div>
+     <div id="sq-ccbox">
+      <div id="sq-card-number"></div>
+      <div class="third" id="sq-expiration-date"></div>
+      <div class="third" id="sq-cvv"></div>
+      <div class="third" id="sq-postal-code"></div>
+      <button id="sq-creditcard" class="button-credit-card" onclick="onGetCardNonce(event)">Gimme dat </button>
+    </div>
    </div> <!-- end #form-container -->
    <!-- TODO: Add script from step 1.1.3 -->
 
@@ -39,6 +43,7 @@
 
        //TODO: Replace with your sandbox application ID
        applicationId: "sandbox-sq0idb-C1P6wWFPYVx4n7Swd4iSmg",
+       locationId: "Q9X780KJ7M75E",
        inputClass: 'sq-input',
        autoBuild: false,
        // Customize the CSS for SqPaymentForm iframe elements
@@ -49,10 +54,13 @@
            placeholderColor: '#a0a0a0',
            backgroundColor: 'transparent',
        }],
+       applePay: {
+        elementId: 'sq-apple-pay'
+      },
        // Initialize the credit card placeholders
        cardNumber: {
            elementId: 'sq-card-number',
-           placeholder: 'Card Number'
+           placeholder: '• • • •  • • • •  • • • •  • • • •'
        },
        cvv: {
            elementId: 'sq-cvv',
@@ -65,9 +73,6 @@
        postalCode: {
            elementId: 'sq-postal-code',
            placeholder: 'Postal'
-       },
-       applePay:{
-        elementId: 'sq-apple-pay'
        },
        // SqPaymentForm callback functions
        callbacks: {
@@ -118,6 +123,48 @@
               });
 
            },
+           methodsSupported: function (methods, unsupportedReason) {
+           console.log(methods);
+
+           var applePayBtn = document.getElementById('sq-apple-pay');
+
+           // Only show the button if Apple Pay on the Web is enabled
+           // Otherwise, display the wallet not enabled message.
+           if (methods.applePay === true) {
+             applePayBtn.style.display = 'inline-block';
+           } else {
+             console.log(unsupportedReason);
+           }
+          },
+          /*
+           * callback function: createPayment Request
+           * Triggered when: a digital wallet payment button is clicked.
+           * returns a PaymentRequestObject from your custom helper function
+           */
+          createPaymentRequest: function () {
+
+     //a PaymentRequestObject is returned from this
+     //helper
+     return {
+            requestShippingAddress: false,
+            requestBillingInfo: true,
+            currencyCode: "USD",
+            countryCode: "US",
+            total: {
+              label: "MERCHANT NAME",
+              amount: "100",
+              pending: false
+            },
+            lineItems: [
+              {
+                label: "Subtotal",
+                amount: "100",
+                pending: false
+              }
+            ]
+          };
+  }
+,
        }
      });
      //TODO: paste code from step 1.1.4
