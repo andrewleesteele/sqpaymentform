@@ -24,14 +24,16 @@
     <h1 id="title">Steelesa Payments</h1>
      <div id="form-container">
      <div id="sq-walletbox">
-      <button class="apple-pay-button apple-pay-button-white" id="sq-apple-pay"></button>
+      <button id="sq-apple-pay" class="apple-pay-button apple-pay-button-black"></button>
+      <button id="sq-google-pay" class="button-google-pay"></button>
+      <button id="sq-masterpass" class="button-masterpass"></button>
      </div>
      <div id="sq-ccbox">
       <div id="sq-card-number"></div>
       <div class="third" id="sq-expiration-date"></div>
       <div class="third" id="sq-cvv"></div>
       <div class="third" id="sq-postal-code"></div>
-      <button id="sq-creditcard" class="button-credit-card" onclick="onGetCardNonce(event)">Gimme dat </button>
+      <button id="sq-creditcard" class="button-credit-card" onclick="onGetCardNonce(event)">Pay</button>
     </div>
    </div> <!-- end #form-container -->
    <!-- TODO: Add script from step 1.1.3 -->
@@ -56,6 +58,14 @@
        }],
        applePay: {
         elementId: 'sq-apple-pay'
+      },
+        // Initialize Google Pay button ID
+      googlePay: {
+        elementId: 'sq-google-pay'
+      },
+      // Initialize Masterpass placeholder ID
+      masterpass: {
+        elementId: 'sq-masterpass'
       },
        // Initialize the credit card placeholders
        cardNumber: {
@@ -135,6 +145,27 @@
            } else {
              console.log(unsupportedReason);
            }
+
+           var googlePayBtn = document.getElementById('sq-google-pay');
+
+            // Only show the button if Google Pay on the Web is enabled
+            if (methods.googlePay === true) {
+              googlePayBtn.style.display = 'inline-block';
+            } else {
+              console.log(unsupportedReason);
+            }
+
+            const masterpassBtn = document.getElementById('sq-masterpass');
+
+            // Only show the button if Masterpass is enabled
+            if (methods.masterpass === true) {
+              masterpassBtn.style.display = 'inline-block';
+              //Set button background image provided by MasterPass
+              // user interpolation
+              masterpassBtn.style.backgroundImage =`url(${paymentForm.masterpassImageUrl()})`
+            } else {
+              console.log(unsupportedReason);
+            }
           },
           /*
            * callback function: createPayment Request
@@ -151,14 +182,14 @@
             currencyCode: "USD",
             countryCode: "US",
             total: {
-              label: "MERCHANT NAME",
-              amount: "100",
+              label: "Steelesa",
+              amount: "1",
               pending: false
             },
             lineItems: [
               {
                 label: "Subtotal",
-                amount: "100",
+                amount: "1",
                 pending: false
               }
             ]
